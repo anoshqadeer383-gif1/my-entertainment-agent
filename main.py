@@ -12,7 +12,7 @@ client = genai.Client(api_key=api_key)
 
 print("Script likhi ja rahi hai...")
 response = client.models.generate_content(
-    model='gemini-2.0-flash',
+    model='gemini-3.8-flash',
     contents="Write a very short, funny 2-sentence script for a YouTube Short about a lazy cat."
 )
 
