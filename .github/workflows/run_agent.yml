@@ -1,0 +1,26 @@
+name: Run YouTube Agent
+
+on:
+  workflow_dispatch: # Is se hum khud button daba kar test kar sakenge
+  schedule:
+    - cron: '0 12 * * *' # Yeh rozana Pakistan ke waqt ke mutabiq shaam 5:00 baje chalega
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: pip install google-generativeai
+
+      - name: Run Agent Script
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python main.py
