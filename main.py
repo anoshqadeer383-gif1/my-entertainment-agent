@@ -10,7 +10,7 @@ if not api_key:
 
 # Connect to Gemini
 genai.configure(api_key=api_key)
-model = genai.GenerativeModel('gemini-1.5-flash')
+model = genai.GenerativeModel('gemini-2.5-flash')
 
 print("Gemini se connect ho gaya! Script likh raha hai...")
 
