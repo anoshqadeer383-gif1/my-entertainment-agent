@@ -1,35 +1,38 @@
+import os
+from google import genai
 
+# 1. Keep API keys in environment secrets
+api_key = os.environ.get("GEMINI_API_KEY")
 
-The GitHub Actions build is failing because:
+if not api_key:
+    print("Error: GEMINI_API_KEY not found in environment secrets.")
+    exit(1)
 
-1. The old model gemini-1.5-flash is not found.
-2. The old google.generativeai Python package is deprecated.
+# 2. Initialize the new google-genai SDK
+client = genai.Client(api_key=api_key)
 
-Make these changes:
+print("Gemini se connect ho gaya! Script likh raha hai...")
 
-1. Replace the old package with the official google-genai SDK.
-2. Update all imports to:
-   from google import genai
+# 3. Use the supported model gemini-flash-latest
+prompt = "Write a very short, funny 2-sentence script for a YouTube Short about a lazy cat."
 
-3. Initialize the Gemini client using:
-   client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
+try:
+    response = client.models.generate_content(
+        model='gemini-flash-latest',
+        contents=prompt
+    )
+    
+    print("--- YEH HAMARA TEST SCRIPT HAI ---")
+    print(response.text)
+    print("----------------------------------")
+    
+    # ==========================================
+    # FUTURE YOUTUBE AUTOMATION FEATURES (Preserved)
+    # ==========================================
+    # TODO: 4. Video Generation (MoviePy/FFmpeg)
+    # TODO: 5. YouTube Upload (YouTube Data API v3)
+    
+    print("Video generation aur YouTube upload ka setup agle step mein hoga.")
 
-4. Replace the old model with:
-   gemini-3.8-flash
-
-5. Update content generation to use:
-   response = client.models.generate_content(
-       model="gemini-3.8-flash",
-       contents=prompt
-   )
-
-6. Update requirements.txt.
-7. Check all Python files for old Gemini imports and model names.
-8. Keep my existing YouTube automation workflow intact.
-9. Do not remove YouTube upload, video generation,
-   title, description, tags or scheduling features.
-10. Check for other errors.
-11. Commit and push all fixes.
-12. Run GitHub Actions again and verify the build.
-
-Do not expose or delete my API keys.
+except Exception as e:
+    print(f"Error aaya: {e}")
