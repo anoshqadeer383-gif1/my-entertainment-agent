@@ -1,21 +1,35 @@
-import os
-from google import genai
+Fix my-entertainment-agent completely.
 
-api_key = os.environ.get("GEMINI_API_KEY")
+The GitHub Actions build is failing because:
 
-if not api_key:
-    print("Error: API key nahi mili!")
-    exit(1)
+1. The old model gemini-1.5-flash is not found.
+2. The old google.generativeai Python package is deprecated.
 
-print("Gemini se connect ho raha hai...")
-client = genai.Client(api_key=api_key)
+Make these changes:
 
-print("Script likhi ja rahi hai...")
-response = client.models.generate_content(
-    model='gemini-3.6-flash',
-    contents="Write a very short, funny 2-sentence script for a YouTube Short about a lazy cat."
-)
+1. Replace the old package with the official google-genai SDK.
+2. Update all imports to:
+   from google import genai
 
-print("--- YEH HAMARA TEST SCRIPT HAI ---")
-print(response.text)
-print("----------------------------------")
+3. Initialize the Gemini client using:
+   client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
+
+4. Replace the old model with:
+   gemini-3.8-flash
+
+5. Update content generation to use:
+   response = client.models.generate_content(
+       model="gemini-3.8-flash",
+       contents=prompt
+   )
+
+6. Update requirements.txt.
+7. Check all Python files for old Gemini imports and model names.
+8. Keep my existing YouTube automation workflow intact.
+9. Do not remove YouTube upload, video generation,
+   title, description, tags or scheduling features.
+10. Check for other errors.
+11. Commit and push all fixes.
+12. Run GitHub Actions again and verify the build.
+
+Do not expose or delete my API keys.
